@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.VEINHORN.spring-data-sqlfile:sqlfile-processor:16e42f6ffd">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/VEINHORN/spring-data-sqlfile/sqlfile-processor/16e42f6ffd/sqlfile-processor-16e42f6ffd.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/VEINHORN/spring-data-sqlfile/sqlfile-processor/16e42f6ffd/sqlfile-processor-16e42f6ffd-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/VEINHORN/spring-data-sqlfile/sqlfile-processor/16e42f6ffd/sqlfile-processor-16e42f6ffd-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<groupId>com.stanbic.service</groupId>
+	<artifactId>finacle-enquiry-service</artifactId>
+	<version>${versionNumber}</version>
+	<packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>finacle-enquiry-service</name>
+	<description>Finacle Enquiry Rest Service :: aggregate pom</description>
+
+	<modules>
+		<module>finacle-enquiry-rest-service</module>
+	</modules>
+
+	<properties>
+
+		<dockerContainerRegistry>stanbicibtccontainerregistrydev.azurecr.io</dockerContainerRegistry>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+
+		<versionNumber>${git.commit.time}.${git.commit.id.abbrev}</versionNumber>
+		<springBootVersion>2.3.1.RELEASE</springBootVersion>
+		<camelSpringBootVersion>3.3.0</camelSpringBootVersion>
+		<jasyptSpringBootStarterVersion>3.0.0</jasyptSpringBootStarterVersion>
+		<mapstructVersion>1.3.1.Final</mapstructVersion>
+		<lombokVersion>1.18.12</lombokVersion>
+
+		<versionNumber>${git.commit.time}.${git.commit.id.abbrev}</versionNumber>
+		<redboxCommonsVersion>20200428.0647.23.7b3bfa7</redboxCommonsVersion>
+		 <keycloak.version>9.0.2</keycloak.version>
+
+		<!-- Code Quality -->
+		<junitVersion>5.4.2</junitVersion>
+		<mockitoVersion>2.22.0</mockitoVersion>
+		<jacocoMavenPluginVersion>0.8.5</jacocoMavenPluginVersion>
+
+		<!-- Maven Plugins Version -->
+		<mavenCompilerPluginVersion>3.7.0</mavenCompilerPluginVersion>
+		<mavenSurefirePluginVersion>2.22.2</mavenSurefirePluginVersion>
+		<mavenFailsafePluginVersion>2.22.2</mavenFailsafePluginVersion>
+		<project13GitCommitIdPluginVersion>2.2.5</project13GitCommitIdPluginVersion>
+		<codehausFlattenMavenPlugin>1.0.0</codehausFlattenMavenPlugin>
+		<googleJibMavenPluginVersion>2.4.0</googleJibMavenPluginVersion>
+
+		<!-- Swagger -->
+		<springfoxSwaggerVersion>2.9.2</springfoxSwaggerVersion>
+		<gauvaVersion>20.0</gauvaVersion>
+
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- to manage project versioning using git commit id plugin -->
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>${project13GitCommitIdPluginVersion}</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<!-- *NOTE*: The default phase of revision is initialize, but in case 
+							you want to change it, you can do so by adding the phase here -->
+						<phase>initialize</phase>
+					</execution>
+					<execution>
+						<id>validate-the-git-infos</id>
+						<goals>
+							<goal>validateRevision</goal>
+						</goals>
+						<!-- *NOTE*: The default phase of validateRevision is verify, but in 
+							case you want to change it, you can do so by adding the phase here -->
+						<phase>package</phase>
+					</execution>
+					<!-- <execution> -->
+					<!-- <phase>validate</phase> -->
+					<!-- <goals> -->
+					<!-- <goal>revision</goal> -->
+					<!-- </goals> -->
+					<!-- </execution> -->
+				</executions>
+				<configuration>
+					<dateFormat>yyyyMMdd.HHmm.ss</dateFormat>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<injectAllReactorProjects>true</injectAllReactorProjects>
+					<runOnlyOnce>true</runOnlyOnce>
+					<verbose>false</verbose>
+					<skipPoms>false</skipPoms>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.basedir}/git.properties</generateGitPropertiesFilename>
+					<includeOnlyProperties>
+						<includeOnlyProperty>git.commit.id</includeOnlyProperty>
+						<includeOnlyProperty>git.branch</includeOnlyProperty>
+						<includeOnlyProperty>git.build.time</includeOnlyProperty>
+						<includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
+						<includeOnlyProperty>git.commit.time</includeOnlyProperty>
+					</includeOnlyProperties>
+				</configuration>
+			</plugin>
+
+			<!-- to use actual values and not placeholders -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>${codehausFlattenMavenPlugin}</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- to skip the default install goal of the maven install plugin -->
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<!-- to skip the default deploy goal of the maven deploy plugin -->
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<!-- <phase>pre-site</phase> -->
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
